@@ -1,3 +1,6 @@
+mod common;
+mod solutions;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
