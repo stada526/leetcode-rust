@@ -37,29 +37,9 @@ mod tests {
 
     #[test]
     fn test() {
-        let root: TreeNode = TreeNode {
-            val: 1,
-            left: Some(Rc::new(RefCell::new(TreeNode {
-                val: 2,
-                left: Some(Rc::new(RefCell::new(TreeNode {
-                    val: 4,
-                    left: None,
-                    right: None,
-                }))),
-                right: Some(Rc::new(RefCell::new(TreeNode {
-                    val: 5,
-                    left: None,
-                    right: None,
-                }))),
-            }))),
-            right: Some(Rc::new(RefCell::new(TreeNode {
-                val: 3,
-                left: None,
-                right: None,
-            }))),
-        };
+        let root = TreeNode::from(&vec![Some(1), Some(2), Some(3), Some(4), Some(5)]);
 
-        let res = Solution::diameter_of_binary_tree(Some(Rc::new(RefCell::new(root))));
+        let res = Solution::diameter_of_binary_tree(Some(Rc::new(RefCell::new(root.unwrap()))));
 
         assert_eq!(res, 3);
     }
