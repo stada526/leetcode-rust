@@ -25,6 +25,10 @@ impl TreeNode {
             return None;
         }
 
+        if vec.len() == 1 {
+            return Some(TreeNode::new(vec[0].unwrap()));
+        }
+
         let root = Rc::new(RefCell::new(TreeNode::new(root_val_option.unwrap())));
 
         let mut queue: VecDeque<Option<Rc<RefCell<TreeNode>>>> = VecDeque::new();
@@ -67,7 +71,16 @@ mod tests {
     use super::TreeNode;
 
     #[test]
-    fn test() {
+    fn test_single_element() {
+        let input = vec![Some(1)];
+
+        let root = TreeNode::from(&input);
+
+        assert_eq!(root.as_ref().unwrap().val, 1);
+    }
+
+    #[test]
+    fn test_multiple_elements() {
         let input = vec![Some(3), Some(9), Some(20), None, None, Some(15), Some(7)];
 
         let root = TreeNode::from(&input);
