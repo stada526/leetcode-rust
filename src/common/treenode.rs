@@ -20,16 +20,16 @@ impl TreeNode {
     }
 
     pub fn from(vec: &Vec<Option<i32>>) -> Option<Self> {
-        let root_val_option = vec[0];
-        if root_val_option.is_none() {
-            return None;
-        }
+        let root_node = match vec[0] {
+            Some(val) => TreeNode::new(val),
+            None => return None,
+        };
 
         if vec.len() == 1 {
-            return Some(TreeNode::new(vec[0].unwrap()));
+            return Some(root_node);
         }
 
-        let root = Rc::new(RefCell::new(TreeNode::new(root_val_option.unwrap())));
+        let root = Rc::new(RefCell::new(root_node));
 
         let mut queue: VecDeque<Option<Rc<RefCell<TreeNode>>>> = VecDeque::new();
         queue.push_back(Some(Rc::clone(&root)));
