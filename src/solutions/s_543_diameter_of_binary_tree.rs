@@ -2,8 +2,8 @@ use std::cell::RefCell;
 use std::cmp;
 use std::rc::Rc;
 
-use crate::common::solution::Solution;
 use crate::common::treenode::TreeNode;
+struct Solution {}
 
 impl Solution {
     pub fn diameter_of_binary_tree(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
