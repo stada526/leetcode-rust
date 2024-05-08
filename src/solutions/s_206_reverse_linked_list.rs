@@ -21,17 +21,9 @@ mod tests {
 
     #[test]
     fn test() {
-        let node5 = ListNode::new(5);
-        let mut node4 = ListNode::new(4);
-        let mut node3 = ListNode::new(3);
-        let mut node2 = ListNode::new(2);
-        let mut head = ListNode::new(1);
-        node4.next = Some(Box::new(node5));
-        node3.next = Some(Box::new(node4));
-        node2.next = Some(Box::new(node3));
-        head.next = Some(Box::new(node2));
+        let head = ListNode::from(&vec![1, 2, 3, 4, 5]);
 
-        let mut res = Solution::reverse_list(Some(Box::new(head)));
+        let mut res = Solution::reverse_list(head);
 
         for expected in [5, 4, 3, 2, 1] {
             let node = res.as_ref().unwrap();
