@@ -1,4 +1,5 @@
 mod s_110_balanced_binary_tree;
+mod s_143_reorder_list;
 mod s_155_min_stack;
 mod s_206_reverse_linked_list;
 mod s_22_generate_parentheses;
