@@ -1,5 +1,50 @@
 use std::collections::HashSet;
 
+struct Coord {
+    x: usize,
+    y: usize,
+}
+
+impl Coord {
+    fn new(x: usize, y: usize) -> Self {
+        Self { x, y }
+    }
+}
+struct Board<'a> {
+    board: &'a Vec<Vec<char>>,
+}
+
+impl<'a> Board<'a> {
+    fn new(board: &'a Vec<Vec<char>>) -> Self {
+        Board { board }
+    }
+    fn row_size(&self) -> i32 {
+        return self.board.len() as i32;
+    }
+    fn col_size(&self) -> i32 {
+        return self.board[0].len() as i32;
+    }
+    fn get_value(&self, coord: &Coord) -> char {
+        return self.board[coord.y][coord.x];
+    }
+    fn next_coords(&self, coord: &Coord) -> Vec<Coord> {
+        let mut ret = vec![];
+        if 0 <= coord.y as i32 - 1 {
+            ret.push(Coord::new(coord.x, coord.y - 1))
+        }
+        if coord.y as i32 + 1 <= self.row_size() - 1 {
+            ret.push(Coord::new(coord.x, coord.y + 1))
+        }
+        if 0 <= coord.x as i32 - 1 {
+            ret.push(Coord::new(coord.x - 1, coord.y))
+        }
+        if coord.x as i32 + 1 <= self.col_size() - 1 {
+            ret.push(Coord::new(coord.x + 1, coord.y))
+        }
+        return ret;
+    }
+}
+
 struct Solution {}
 
 impl Solution {
@@ -16,12 +61,12 @@ impl Solution {
         //  - Maximum board size is 36 (m * n)
         //
         let word_vec = word.chars().collect::<Vec<char>>();
-        for row_index in 0..board.len() {
-            for col_index in 0..board[0].len() {
+        let b = Board::new(&board);
+        for row_index in 0..b.row_size() as usize {
+            for col_index in 0..b.col_size() as usize {
                 if Self::dfs(
-                    row_index as i32,
-                    col_index as i32,
-                    &board,
+                    Coord::new(col_index, row_index),
+                    &b,
                     0,
                     &word_vec,
                     &mut HashSet::new(),
@@ -35,54 +80,37 @@ impl Solution {
     }
 
     fn dfs(
-        row_index: i32,
-        col_index: i32,
-        board: &Vec<Vec<char>>,
+        coord: Coord,
+        board: &Board,
         word_index: usize,
         word_vec: &Vec<char>,
         visited: &mut HashSet<(usize, usize)>,
     ) -> bool {
-        if row_index < 0
-            || board.len() as i32 - 1 < row_index
-            || col_index < 0
-            || board[0].len() as i32 - 1 < col_index
-        {
+        if visited.contains(&(coord.x, coord.y)) {
             return false;
         }
 
-        let row_index_usize = row_index as usize;
-        let col_index_usize = col_index as usize;
-
-        if visited.contains(&(row_index_usize, col_index_usize)) {
+        if board.get_value(&coord) != word_vec[word_index] {
             return false;
         }
 
-        if board[row_index_usize][col_index_usize] != word_vec[word_index] {
-            return false;
-        }
-
-        visited.insert((row_index_usize, col_index_usize));
+        visited.insert((coord.x, coord.y));
 
         if word_index == word_vec.len() - 1 {
             return true;
         }
-        let mut res = vec![];
-        for (row, col) in [
-            (row_index + 1, col_index),
-            (row_index - 1, col_index),
-            (row_index, col_index + 1),
-            (row_index, col_index - 1),
-        ] {
+
+        let mut res: Vec<bool> = vec![];
+        for next_coord in board.next_coords(&coord) {
             res.push(Self::dfs(
-                row,
-                col,
+                next_coord,
                 board,
                 word_index + 1,
                 word_vec,
                 visited,
             ));
         }
-        visited.remove(&(row_index_usize, col_index_usize));
+        visited.remove(&(coord.x, coord.y));
         return res.iter().any(|x| *x);
     }
 }
@@ -90,54 +118,6 @@ impl Solution {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_dfs_true() {
-        let board: Vec<Vec<char>> = vec![
-            vec!['A', 'B', 'C', 'E'],
-            vec!['S', 'F', 'C', 'S'],
-            vec!['A', 'D', 'E', 'E'],
-        ];
-        let word = "ABCCED".to_string();
-        let word_vec = word.chars().collect::<Vec<char>>();
-        let res = Solution::dfs(0, 0, &board, 0, &word_vec, &mut HashSet::new());
-        assert!(res);
-    }
-
-    #[test]
-    fn test_dfs_true_2() {
-        let board = vec![vec!['a', 'b'], vec!['c', 'd']];
-        let word = "cdba".to_string();
-        let word_vec = word.chars().collect::<Vec<char>>();
-        let res = Solution::dfs(1, 0, &board, 0, &word_vec, &mut HashSet::new());
-        assert!(res);
-    }
-
-    #[test]
-    fn test_dfs_true_3() {
-        let board = vec![
-            vec!['A', 'B', 'C', 'E'],
-            vec!['S', 'F', 'E', 'S'],
-            vec!['A', 'D', 'E', 'E'],
-        ];
-        let word = "ABCESEEEFS";
-        let word_vec = word.chars().collect::<Vec<char>>();
-        let res = Solution::dfs(0, 0, &board, 0, &word_vec, &mut HashSet::new());
-        assert!(res);
-    }
-
-    #[test]
-    fn test_dfs_false() {
-        let board: Vec<Vec<char>> = vec![
-            vec!['A', 'B', 'C', 'E'],
-            vec!['S', 'F', 'C', 'S'],
-            vec!['A', 'D', 'E', 'E'],
-        ];
-        let word = "ABCCED".to_string();
-        let word_vec = word.chars().collect::<Vec<char>>();
-        let res = Solution::dfs(1, 0, &board, 0, &word_vec, &mut HashSet::new());
-        assert!(!res);
-    }
 
     #[test]
     fn test_exist_true() {
