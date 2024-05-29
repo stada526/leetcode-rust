@@ -11,5 +11,6 @@ mod s_46_permutations;
 mod s_543_diameter_of_binary_tree;
 mod s_567_permutation_in_string;
 mod s_572_subtree_of_another_tree;
+mod s_704_binary_search;
 mod s_78_subset;
 mod s_79_word_search;
