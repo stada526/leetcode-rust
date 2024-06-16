@@ -15,3 +15,4 @@ mod s_572_subtree_of_another_tree;
 mod s_704_binary_search;
 mod s_78_subset;
 mod s_79_word_search;
+mod s_98_validate_binary_search_tree;
