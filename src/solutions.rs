@@ -6,6 +6,7 @@ mod s_198_house_robbers;
 mod s_19_remove_nth_node_from_end_of_list;
 mod s_206_reverse_linked_list;
 mod s_22_generate_parentheses;
+mod s_238_product_of_array_except_self;
 mod s_3_longest_substring_without_repeating_characters;
 mod s_417_pacific_atlantic_water_flow;
 mod s_424_longest_repeating_character_replacement;
