@@ -1,4 +1,5 @@
 mod s_110_balanced_binary_tree;
+mod s_128_longest_consecutive_sequence;
 mod s_143_reorder_list;
 mod s_153_find_minimum_in_rotated_sorted_array;
 mod s_155_min_stack;
