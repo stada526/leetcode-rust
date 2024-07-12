@@ -5,7 +5,7 @@ pub struct MaxHeap {
 impl MaxHeap {
     pub fn new(array: Vec<i32>) -> Self {
         let mut heap = Self { tree: array };
-        for i in 0..(heap.tree.len() / 2) {
+        for i in (0..(heap.tree.len() / 2)).rev() {
             heap.heapify(i)
         }
 
@@ -57,6 +57,10 @@ impl MaxHeap {
             (self.tree[index], self.tree[max_index]) = (self.tree[max_index], self.tree[index]);
             self.heapify(max_index)
         }
+    }
+
+    pub fn len(&self) -> usize {
+        return self.tree.len();
     }
 }
 
