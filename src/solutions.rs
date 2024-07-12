@@ -1,3 +1,4 @@
+mod s_1046_last_stone_weight;
 mod s_110_balanced_binary_tree;
 mod s_128_longest_consecutive_sequence;
 mod s_143_reorder_list;
